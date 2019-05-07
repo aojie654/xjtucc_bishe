@@ -35,7 +35,7 @@ for t in range(0, len(l0)):
             tr0 = re.sub(r"u\\\d?", "", tr0)
             tr0 = re.sub(r"欢迎下载更多小说", "", tr0)
             tr0 = re.sub(r"http[^\n]*?\n", "", tr0)
-            tr0 = re.sub(r"[^a-zA-Z0-9\u4e00-\u9fa5]", "", tr0)
+            # tr0 = re.sub(r"[^a-zA-Z0-9\u4e00-\u9fa5]", "", tr0)
             tr0 = re.sub(
                 r"(第.{1,3}[章节]|[作写]于|.{1,4}年.{1,2}月(.{1,2}日)*|.{1,2}月.{1,2}日)", "", tr0)
             tr0 = re.sub(r"(贾平凹.+)?全文完.*选自.+", "", tr0)
