@@ -15,13 +15,24 @@ str0 = str(spgop("find "+dir0+" -name '*.txt'"))
 l0 = str0.split('\n')
 
 # 文件转码
-for t in range(0, len(l0)):
-    # 以GB2312读取文件内容
-    # tf0 = open(l0[t], "r", encoding="utf-8")
-    tf0 = open(l0[t], 'r', encoding='GB2312', errors='ignore')
-    print(l0[t])
-    tr0 = tf0.read()
-    tf0.close()
+for t in l0:
+    
+    # 跳过别名和字典库,以及已经转换的文件
+    if ("alias.txt" in t) or ("dict.txt" in t) or ("_utf8.txt" in t):
+        pass
+    else:
+        try:
+            # 以GB2312读取文件内容, 忽略无法转码部分
+            tf0 = open(t, 'r', encoding='GB2312', errors='ignore')
+            print(t)
+            tr0 = tf0.read()
+            tf0.close()
 
-    # 创建一个文件名相同,后缀增加utf8的文本文件
-
+            # 创建一个文件名相同,后缀增加utf8的文本文件
+            tf0 = open(t.replace(".txt", '') +
+                       "_utf8.txt", "w+", encoding="utf-8")
+            tf0.write(tr0)
+        except Exception as identifier:
+            print(identifier)
+        finally:
+            tf0.close()
