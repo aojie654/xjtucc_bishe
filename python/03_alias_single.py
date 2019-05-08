@@ -1,91 +1,70 @@
-from os import system as s
+from os import system as s, path as p
 from subprocess import getoutput as spgop
 import re
-
 # 输入路径
-dir0 = input("Input DIR plz(with out end of /):")
+# dir0 = input("Input DIR plz(with out end of /):")
+dir0 = "/Volumes/data/tmp/midcopy/美穴地"
 
-# 调用find查找$file_pure.txt文件
-str0 = str(spgop("find "+dir0+" -name '*_pure.txt'"))
+# 由于不是每个作品都有别名, 因此使用find查找alias.txt文件
+find_result_0 = str(spgop("find "+dir0+" -name 'alias.txt'"))
 
 # 定义列表l0以存放分割后的文件列表
-l0 = str0.split('\n')
+list_file_name_0 = find_result_0.split('\n')
 
-# 删除每个$file_pure.txt中的广告,章节,作者和日期(冗余文字)
-for t in l0:
+# 判断文件是否存在
+for list_file_name_0_t in list_file_name_0:
     # 获取当前文件所在路径
-    dt0 = t[0:t.rfind('/')]
+    file_dir_0 = list_file_name_0_t[0:list_file_name_0_t.rfind('/')]
 
-    # 读取alias.txt内容
+    # 获取作品名
+    file_name_0 = file_dir_0[file_dir_0.rfind('/')+1:]
+
     try:
-        tf0 = open(dt0+'/alias.txt', 'r', 'utf-8')
+        # 拼接以得到文件名
+        source_file_name_0 = file_dir_0+"/"+file_name_0+"_utf8_pure.txt"
+        # 判断$file_single.txt文件如果存在, 即已经处理过则跳过
+        if p.exists(source_file_name_0.replace(".txt", "_single.txt")):
+            pass
+        # 否则进行别名处理
+        else:
+            # 打开alias.txt,读取alias.txt内容, 将获取到的内容以换行进行分割得到内容列表
+            open_file_alias_0 = open(list_file_name_0_t, 'r', encoding='utf-8')
+            list_alias_0 = open_file_alias_0.read().split('\n')
 
-        # 将获取到的内容以换行进行分割得到内容列表
-        ct0 = tf0.read().split('\n')
-        
-        # 新建词典, 以:分割,冒号的人名为key,冒号后的别名列表eval为value.
-        dct0 = {}
-        for t in ct0:
-            """
-            t.find(':')                     查找:所处下标
-            t[0:t.find(':')]                截取0到:处,即人名
-            dct0[t[0:t.find(':')]]          更新key为人名的键值对
-            t.find(':')+2:-1]               取方括号内的字符串
-            t[t.find(':')+2:-1].split(',')  使用','分割,即得到别名列表
-            """
-            dct0[t[0:t.find(':')]] = t[t.find(':')+2:-1].split(',')
+            # 打开#file_pure.txt, 读取内容
+            print(source_file_name_0)
+            open_file_pure_0 = open(source_file_name_0, 'r', encoding='utf-8')
+            read_content_0 = open_file_pure_0.read()
 
+            # 新建词典, 以:分割,冒号的人名为key,冒号后的别名列表eval为value.
+            dct0 = {}
+            for list_alias_0_t0 in list_alias_0:
+                """
+                $1 list_alias_0_t0.find(':')                            查找':'的下标
+                $2 list_alias_0_t0[0:$1]                                从0下标截取到':'处,即人名
+                $3 dct0[$2]                                             更新值为value的人名
+                $4 list_alias_0_t0.find(':')+1:]                        冒号后内容
+                $5 re.sub(r"\[|,?\]", "", $4)                           将'['',]'']'删除,直至$4包含','
+                $6 $5.split(',')                                        使用','分割各别名,即得到别名列表
+                """
+                dct0[list_alias_0_t0[0:list_alias_0_t0.find(
+                    ':')]] = re.sub(r"\[|,?\]", "", list_alias_0_t0[list_alias_0_t0.find(':')+1:]).split(',')
 
+            # 使用t2遍历字典的键
+            list_person_names_0 = list(dct0.keys())
+            for list_alias_0_t2 in list_person_names_0:
+                # 使用t3遍历字典的值
+                list_person_alias_0 = list(dct0[list_alias_0_t2])[1:]
+                for list_alias_0_t3 in list_person_alias_0:
+                    # 使用key替换values, 即人名替换别名
+                    read_content_0 = read_content_0.replace(
+                        list_alias_0_t3, list_alias_0_t2)
+            open_file_single_0 = open(source_file_name_0.replace(
+                ".txt", "_single.txt"), 'w+', encoding='utf-8')
+            open_file_single_0.write(read_content_0)
     except Exception as identifier:
         print(identifier)
     finally:
-        tf0.close
-    # 跳过已经去除冗余文字的文件
-    if "_single.txt" in t:
-        pass
-    else:
-        try:
-            # 读取文件内容
-            tf0 = open(t, "r", encoding="utf-8")
-            print(t)
-            tr0 = tf0.read()
-            tf0.close()
-
-            # 创建/修改在原文件之后追加_pure的文本文件, 并保存为UTF-8编码
-            tf0 = open(t.replace(".txt", '') +
-                       "_single.txt", "w+", encoding="utf-8")
-
-            # 删除\u3000之类的不可编码字符
-            tr0 = re.sub(r"u\\\d?", "", tr0)
-
-            # 删除类似于广告之类的文本
-            tr0 = re.sub(r"http[^\n]*?\n", "", tr0)
-            tr0 = re.sub(r".*(更多小说|更多电子书|章节内容开始|内容简介).*", "", tr0)
-
-            # 删除开头作品名
-            t = t.replace(dir0+"/", '')
-            t = t.replace("_pure.txt", '')
-            if '/' in t:
-                an0 = t[t.rfind('/'):]
-            else:
-                an0 = t
-            rt0 = re.compile(r".{0,3}"+an0+".*(贾平凹|路遥)?.*")
-            tr0 = re.sub(rt0, "", tr0)
-
-            # 删除章节
-            tr0 = re.sub(
-                r"(\s*[一二三四五六七八九十]{1,3}\s*\n|第.{1,3}[章节]\s*)", "", tr0)
-
-            # 删除时间和地址
-            tr0 = re.sub(
-                r"(.+年.+[写作初毕]稿?于.+)|([写作毕初]稿?于.{1,4}年(.{1,3}月)?(.{1,3}日)?).{0,10}|(.+年(.{1,3}月)?(.{1,3}日)?[早午晚夜初记]?.{1,10})", "", tr0)
-
-            # 删除作者和摘录
-            tr0 = re.sub(r".*(贾平凹.+|路遥.+)?(全文完|已完结).*(选自)?.+", "", tr0)
-
-            # 保存并关闭文件
-            tf0.write(tr0)
-        except Exception as identifier:
-            print(identifier)
-        finally:
-            tf0.close()
+        open_file_alias_0.close()
+        open_file_pure_0.close()
+        open_file_single_0.close()

@@ -2,37 +2,37 @@ from os import system as s
 from subprocess import getoutput as spgop
 
 # 输入路径
-# dir0 = "/Users/aojie654/tmp/bishe_znl/textcopy"
-dir0 = input("Input DIR plz(with out end of /):")
+# dir0 = input("Input DIR plz(with out end of /):")
+dir0 = "/Volumes/data/tmp/midcopy"
 
 # 追加/
 dir1 = dir0+'/'
 
 # 调用find查找.txt文件
-str0 = str(spgop("find "+dir0+" -name '*.txt'"))
+find_result_0 = str(spgop("find "+dir0+" -name '*.txt'"))
 
 # 定义列表l0以存放分割后的文件列表
-l0 = str0.split('\n')
+list_file_name_0 = find_result_0.split('\n')
 
 # 文件转码
-for t in l0:
+for list_file_name_0_t in list_file_name_0:
 
     # 跳过别名和字典库,以及已经转换的文件 
-    if ("alias.txt" in t) or ("dict.txt" in t) or ("_utf8.txt" in t):
+    if ("alias.txt" in list_file_name_0_t) or ("dict.txt" in list_file_name_0_t) or ("_utf8.txt" in list_file_name_0_t):
         pass
     else:
         try:
             # 以GB2312读取文件内容, 忽略无法转码部分
-            tf0 = open(t, 'r', encoding='GB2312', errors='ignore')
-            print(t)
-            tr0 = tf0.read()
-            tf0.close()
+            open_file_source_0 = open(list_file_name_0_t, 'r', encoding='GB2312', errors='ignore')
+            print(list_file_name_0_t)
+            read_content_0 = open_file_source_0.read()
+            open_file_source_0.close()
 
             # 创建一个文件名相同,后缀增加utf8的文本文件
-            tf0 = open(t.replace(".txt", '') +
+            open_file_convert_0 = open(list_file_name_0_t.replace(".txt", '') +
                        "_utf8.txt", "w+", encoding="utf-8")
-            tf0.write(tr0)
+            open_file_convert_0.write(read_content_0)
         except Exception as identifier:
             print(identifier)
         finally:
-            tf0.close()
+            open_file_convert_0.close()
