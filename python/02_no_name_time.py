@@ -3,7 +3,7 @@ from subprocess import getoutput as spgop
 import re
 
 # 输入路径
-dir0 = "/Volumes/data/codes/xjtucc_bishe/znl/copy/中篇小说/"
+dir0 = "/Volumes/data/codes/xjtucc_bishe/znl/copy/中篇小说"
 # dir0 = input("Input DIR plz(with out end of /):")
 
 # 调用find查找$file_utf8.txt文件
@@ -11,14 +11,6 @@ str0 = str(spgop("find "+dir0+" -name '*_utf8.txt'"))
 
 # 定义列表l0以存放分割后的文件列表
 l0 = str0.split('\n')
-l1 = []
-
-# 根据文件名去掉$file_utf8.txt创建作品名称列表
-for t in l0:
-    t = t.replace(dir0+"/", '')
-    t = t.replace("_utf8.txt", '')
-    t = t[0:t.find('/')]
-    l1.append(t)
 
 # 删除每个$file_utf8.txt中的广告,章节,作者和日期(冗余文字)
 for t in l0:
@@ -43,18 +35,25 @@ for t in l0:
 
             # 删除类似于广告之类的文本
             tr0 = re.sub(r"http[^\n]*?\n", "", tr0)
-            tr0 = re.sub(r"欢迎下载更多小说", "", tr0)
+            tr0 = re.sub(r".*(更多小说|章节内容开始).*", "", tr0)
+
+            # 删除开头作品名
+            t = t.replace(dir0+"/", '')
+            t = t.replace("_utf8.txt", '')
+            an0 = t[0:t.find('/')]
+            tr0 = re.sub(r"^(\s*.{0,3})"+an0+r"(.{0,3}\s*)$", "", tr0)
 
             # 删除章节
             tr0 = re.sub(
                 r"(\s*[一二三四五六七八九十]{1,3}\s*\n|第.{1,3}[章节]\s*)", "", tr0)
 
             # 删除时间和地址
-            tr0 = re.sub(r"(.{1,4}年.+[写作初毕]稿?于.+)|([写作毕初]稿?于.{1,4}年(.{1,3}月)?(.{1,3}日)?).{0,10}|(.{1,4}年(.{1,3}月)?(.{1,3}日)?[早午晚夜初记]?.{1,10})", "", tr0)
+            tr0 = re.sub(
+                r"(.{1,4}年.+[写作初毕]稿?于.+)|([写作毕初]稿?于.{1,4}年(.{1,3}月)?(.{1,3}日)?).{0,10}|(.+年(.{1,3}月)?(.{1,3}日)?[早午晚夜初记]?.{1,10})", "", tr0)
 
             # 删除作者和摘录
-            tr0 = re.sub(r"(贾平凹.+|路遥.+)?全文完.*(选自)?.+", "", tr0)
-            # tr0 = re.sub(r".*(初|毕|写)稿?于改?(再改于)?.+", "", tr0)
+            tr0 = re.sub(r".*(贾平凹.+|路遥.+)?(全文完|已完结).*(选自)?.+", "", tr0)
+            
 
             # 保存并关闭文件
             tf0.write(tr0)
