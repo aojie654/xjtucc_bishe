@@ -16,7 +16,7 @@ l0 = str0.split('\n')
 
 # 文件转码
 for t in l0:
-    
+
     # 跳过别名和字典库,以及已经转换的文件
     if ("alias.txt" in t) or ("dict.txt" in t) or ("_utf8.txt" in t):
         pass
