@@ -2,8 +2,8 @@ from os import system as s
 from subprocess import getoutput as spgop
 
 # 输入路径
-# dir0 = input("Input DIR plz(with out end of /):")
-dir0 = "/Volumes/data/tmp/midcopy"
+dir0 = input("Input DIR plz(with out end of /):")
+# dir0 = "/Volumes/data/tmp/midcopy"
 
 # 追加/
 dir1 = dir0+'/'

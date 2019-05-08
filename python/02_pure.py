@@ -3,8 +3,8 @@ from subprocess import getoutput as spgop
 import re
 
 # 输入路径
-# dir0 = input("Input DIR plz(with out end of /):")
-dir0 = "/Volumes/data/tmp/midcopy"
+dir0 = input("Input DIR plz(with out end of /):")
+# dir0 = "/Volumes/data/tmp/midcopy"
 
 # 调用find查找$file_utf8.txt文件
 find_result_0 = str(spgop("find "+dir0+" -name '*_utf8.txt'"))

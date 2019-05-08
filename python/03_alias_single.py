@@ -2,8 +2,8 @@ from os import system as s, path as p
 from subprocess import getoutput as spgop
 import re
 # 输入路径
-# dir0 = input("Input DIR plz(with out end of /):")
-dir0 = "/Volumes/data/tmp/midcopy/美穴地"
+dir0 = input("Input DIR plz(with out end of /):")
+# dir0 = "/Volumes/data/tmp/midcopy/美穴地"
 
 # 由于不是每个作品都有别名, 因此使用find查找alias.txt文件
 find_result_0 = str(spgop("find "+dir0+" -name 'alias.txt'"))
