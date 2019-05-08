@@ -3,8 +3,7 @@ from subprocess import getoutput as spgop
 import re
 
 # 输入路径
-dir0 = "/Volumes/data/codes/xjtucc_bishe/znl/copy/中篇小说"
-# dir0 = input("Input DIR plz(with out end of /):")
+dir0 = input("Input DIR plz(with out end of /):")
 
 # 调用find查找$file_utf8.txt文件
 str0 = str(spgop("find "+dir0+" -name '*_utf8.txt'"))
@@ -35,13 +34,17 @@ for t in l0:
 
             # 删除类似于广告之类的文本
             tr0 = re.sub(r"http[^\n]*?\n", "", tr0)
-            tr0 = re.sub(r".*(更多小说|章节内容开始).*", "", tr0)
+            tr0 = re.sub(r".*(更多小说|更多电子书|章节内容开始|内容简介).*", "", tr0)
 
             # 删除开头作品名
             t = t.replace(dir0+"/", '')
             t = t.replace("_utf8.txt", '')
-            an0 = t[0:t.find('/')]
-            tr0 = re.sub(r"^(\s*.{0,3})"+an0+r"(.{0,3}\s*)$", "", tr0)
+            if '/' in t:
+                an0 = t[t.rfind('/'):]
+            else:
+                an0 = t
+            rt0 = re.compile(r".{0,3}"+an0+".*(贾平凹|路遥)?.*")
+            tr0 = re.sub(rt0, "", tr0)
 
             # 删除章节
             tr0 = re.sub(
@@ -49,7 +52,7 @@ for t in l0:
 
             # 删除时间和地址
             tr0 = re.sub(
-                r"(.{1,4}年.+[写作初毕]稿?于.+)|([写作毕初]稿?于.{1,4}年(.{1,3}月)?(.{1,3}日)?).{0,10}|(.+年(.{1,3}月)?(.{1,3}日)?[早午晚夜初记]?.{1,10})", "", tr0)
+                r"(.+年.+[写作初毕]稿?于.+)|([写作毕初]稿?于.{1,4}年(.{1,3}月)?(.{1,3}日)?).{0,10}|(.+年(.{1,3}月)?(.{1,3}日)?[早午晚夜初记]?.{1,10})", "", tr0)
 
             # 删除作者和摘录
             tr0 = re.sub(r".*(贾平凹.+|路遥.+)?(全文完|已完结).*(选自)?.+", "", tr0)
