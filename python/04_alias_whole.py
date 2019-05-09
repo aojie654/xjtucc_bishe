@@ -1,6 +1,5 @@
 #-*- coding：utf-8 -*-
 
-
 from os import system as s, path as p
 from subprocess import getoutput as spgop
 import re
@@ -25,8 +24,8 @@ for list_file_name_0_t in list_file_name_0:
     try:
         # 拼接以得到文件名
         source_file_name_0 = file_dir_0+"/"+file_name_0+"_utf8_pure.txt"
-        # 判断$file_single.txt文件如果存在, 即已经处理过则跳过
-        if p.exists(source_file_name_0.replace(".txt", "_single.txt")):
+        # 判断$file_whole.txt文件如果存在, 即已经处理过则跳过
+        if p.exists(source_file_name_0.replace(".txt", "_whole.txt")):
             pass
         # 否则进行别名处理
         else:
@@ -38,6 +37,9 @@ for list_file_name_0_t in list_file_name_0:
             print(source_file_name_0)
             open_file_pure_0 = open(source_file_name_0, 'r', encoding='utf-8')
             read_content_0 = open_file_pure_0.read()
+
+            # 去掉\n和多余空格, 即合并换行
+            read_content_0 = re.sub(r'[\n\s]+', '', read_content_0)
 
             # 新建词典, 以:分割,冒号的人名为key,冒号后的别名列表eval为value.
             dct0 = {}
@@ -62,12 +64,13 @@ for list_file_name_0_t in list_file_name_0:
                     # 使用key替换values, 即人名替换别名
                     read_content_0 = read_content_0.replace(
                         list_alias_0_t3, list_alias_0_t2)
-            open_file_single_0 = open(source_file_name_0.replace(
-                ".txt", "_single.txt"), 'w+', encoding='utf-8')
-            open_file_single_0.write(read_content_0)
+                
+            open_file_whole_0 = open(source_file_name_0.replace(
+                ".txt", "_whole.txt"), 'w+', encoding='utf-8')
+            open_file_whole_0.write(read_content_0)
     except Exception as identifier:
         print(identifier)
     finally:
         open_file_alias_0.close()
         open_file_pure_0.close()
-        open_file_single_0.close()
+        open_file_whole_0.close()
