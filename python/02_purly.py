@@ -53,7 +53,7 @@ for list_file_name_0_t in list_file_name_0:
             else:
                 works_name_0 = list_file_name_0_t
             read_content_0 = re.sub(
-                r"^.{0,3}"+works_name_0+".*(贾平凹|路遥)?.*", "", read_content_0)
+                r"^\s+|\S{0,3}"+works_name_0+".*(贾平凹|路遥)?.*", "", read_content_0)
 
             # 删除章节
             read_content_0 = re.sub(
