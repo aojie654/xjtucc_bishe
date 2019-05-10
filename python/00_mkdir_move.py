@@ -5,7 +5,6 @@ from subprocess import getoutput as spgop
 
 # 输入需要根据txt文件名创建文件夹的路径
 dir0 = input("Input DIR plz(with out end of /):")
-# dir0 = "/Volumes/data/tmp/copy"
 
 # 查找.txt文件
 find_result_0 = str(spgop("find "+dir0+" -name '*.txt'"))

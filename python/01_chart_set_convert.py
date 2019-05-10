@@ -1,12 +1,11 @@
 #-*- coding：utf-8 -*-
 
-
 from os import system as s
 from subprocess import getoutput as spgop
+import chardet
 
 # 输入路径
 dir0 = input("Input DIR plz(with out end of /):")
-# dir0 = "/Volumes/data/tmp/midcopy"
 
 # 追加/
 dir1 = dir0+'/'
@@ -25,17 +24,23 @@ for list_file_name_0_t in list_file_name_0:
         pass
     else:
         try:
-            # 以GB2312读取文件内容, 忽略无法转码部分
-            open_file_source_0 = open(list_file_name_0_t, 'r', encoding='GB2312', errors='ignore')
-            print(list_file_name_0_t)
+            # 以rb读取文件内容, 猜测编码
+            open_file_source_0 = open(list_file_name_0_t, 'rb')
             read_content_0 = open_file_source_0.read()
-            open_file_source_0.close()
+            read_charset_0 = chardet.detect(read_content_0)['encoding']
+            
+            # 将内容编码为utf-8
+            read_text_0 = str(read_content_0, encoding='utf-8')
+            print(list_file_name_0_t+', '+ read_charset_0)
+            
 
             # 创建一个文件名相同,后缀增加utf8的文本文件
             open_file_convert_0 = open(list_file_name_0_t.replace(".txt", '') +
-                       "_utf8.txt", "w+", encoding="utf-8")
-            open_file_convert_0.write(read_content_0)
+                    "_utf8.txt", "w+", encoding="utf-8")
+            open_file_convert_0.write(read_text_0)
+
         except Exception as identifier:
             print(identifier)
         finally:
+            open_file_source_0.close()
             open_file_convert_0.close()
