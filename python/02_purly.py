@@ -35,9 +35,6 @@ for list_file_name_0_t in list_file_name_0:
             open_file_pure_0 = open(list_file_name_0_t.replace(".txt", '') +
                                     "_pure.txt", "w+", encoding="utf-8")
 
-            # 删除两个以上的换行
-            read_content_0 = re.sub(r"\n{2}", "\n", read_content_0)
-
             # 删除类似于广告之类的文本
             read_content_0 = re.sub(r"http[^\n]*?\n", "\n", read_content_0)
             read_content_0 = re.sub(
@@ -65,7 +62,11 @@ for list_file_name_0_t in list_file_name_0:
             # 删除时间和地址
             read_content_0 = re.sub(
                 r"(.+年.+[写作初毕]稿?于.{1,10}\n)|([写作毕初]稿?于.{1,4}年(.{1,3}月)?(.{1,3}日)?).{0,10}\n|(.+年(.{1,3}月)?(.{1,3}日)?[早午晚夜初记]?.{1,10}\n)", "\n", read_content_0)
-
+            
+            # 删除两个以上的换行和行首空格
+            read_content_0 = re.sub(r"(\n{2,}|\s+\n)", "\n", read_content_0)
+            read_content_0 = re.sub(r"\n\s+", "\n", read_content_0)
+            
             # 保存并关闭文件
             open_file_pure_0.write(read_content_0)
         except Exception as identifier:
