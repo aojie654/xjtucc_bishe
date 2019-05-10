@@ -1,4 +1,4 @@
-#-*- coding：utf-8 -*-
+# -*- coding：utf-8 -*-
 
 
 from os import system as s, path as p
@@ -15,6 +15,7 @@ list_file_name_0 = find_result_0.split('\n')
 
 # 判断文件是否存在
 for list_file_name_0_t in list_file_name_0:
+
     # 获取当前文件所在路径
     file_dir_0 = list_file_name_0_t[0:list_file_name_0_t.rfind('/')]
 
@@ -24,17 +25,18 @@ for list_file_name_0_t in list_file_name_0:
     try:
         # 拼接以得到文件名
         source_file_name_0 = file_dir_0+"/"+file_name_0+"_utf8_pure.txt"
+        print(source_file_name_0, end=", ")
+
         # 判断$file_single.txt文件如果存在, 即已经处理过则跳过
         if p.exists(source_file_name_0.replace(".txt", "_single.txt")):
-            pass
-        # 否则进行别名处理
+            print("[Skiped.]")
         else:
+            print("[Processing...]")
             # 打开alias.txt,读取alias.txt内容, 将获取到的内容以换行进行分割得到内容列表
             open_file_alias_0 = open(list_file_name_0_t, 'r', encoding='utf-8')
             list_alias_0 = open_file_alias_0.read().split('\n')
 
             # 打开#file_pure.txt, 读取内容
-            print(source_file_name_0)
             open_file_pure_0 = open(source_file_name_0, 'r', encoding='utf-8')
             read_content_0 = open_file_pure_0.read()
 
@@ -65,7 +67,7 @@ for list_file_name_0_t in list_file_name_0:
                 ".txt", "_single.txt"), 'w+', encoding='utf-8')
             open_file_single_0.write(read_content_0)
     except Exception as identifier:
-        print(identifier)
+        print(list_file_name_0_t+" : "+identifier)
     finally:
         open_file_alias_0.close()
         open_file_pure_0.close()
