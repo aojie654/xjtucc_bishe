@@ -1,7 +1,7 @@
 # -*- coding：utf-8 -*-
 
 
-from os import system as s
+from os import system as s, path as p
 from subprocess import getoutput as spgop
 import re
 
@@ -21,7 +21,7 @@ for list_file_name_0_t in list_file_name_0:
     print(list_file_name_0_t, end=", ")
     
     # 跳过已经去除冗余文字的文件
-    if "_pure.txt" in list_file_name_0_t:
+    if p.exists(list_file_name_0_t.replace(".txt", "_pure.txt")):
         print("[Skiped.]")
     else:
         print("[Processing...]")
@@ -53,11 +53,11 @@ for list_file_name_0_t in list_file_name_0:
             else:
                 works_name_0 = list_file_name_0_t
             read_content_0 = re.sub(
-                r"^\s+|\S{0,3}"+works_name_0+".*(贾平凹|路遥)?.*", "", read_content_0)
+                r"^(\s*《?)"+works_name_0+".{0,3}(贾平凹|路遥)?.{0,3}", "", read_content_0)
 
             # 删除章节
             read_content_0 = re.sub(
-                r"(^\s*[一二三四五六七八九十0-9]{1,3}\s*\n|.*第.{1,3}[章节部].*\s*)", "\n", read_content_0)
+                r"(\n\s*[一二三四五六七八九十0-9]{1,3}\s*\n|.*第.{1,3}[章节部].*\s*)", "\n", read_content_0)
 
             # 删除时间和地址
             read_content_0 = re.sub(
