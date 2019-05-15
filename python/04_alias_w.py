@@ -1,4 +1,5 @@
-#-*- coding：utf-8 -*-
+# -*- coding：utf-8 -*-
+
 
 from os import system as s, path as p
 from subprocess import getoutput as spgop
@@ -14,7 +15,7 @@ list_file_name_0 = find_result_0.split('\n')
 
 # 判断文件是否存在
 for list_file_name_0_t in list_file_name_0:
-    
+
     # 获取当前文件所在路径
     file_dir_0 = list_file_name_0_t[0:list_file_name_0_t.rfind('/')]
 
@@ -31,44 +32,54 @@ for list_file_name_0_t in list_file_name_0:
             print("[Skiped.]")
         else:
             print("[Processing...]")
-            # 打开alias.txt,读取alias.txt内容, 将获取到的内容以换行进行分割得到内容列表
+            # 打开alias.txt
             open_file_alias_0 = open(list_file_name_0_t, 'r', encoding='utf-8')
-            list_alias_0 = open_file_alias_0.read().split('\n')
+
+            # 读取alias.txt内容
+            read_content_alias_0 = open_file_alias_0.read()
+            
+            # 将"["替换为"("
+            read_content_alias_0 = re.sub("\[", "(", read_content_alias_0)
+            
+            # "]"替换为")"
+            read_content_alias_0 = re.sub(",?\]", ")", read_content_alias_0)
+            
+            # 将','替换为')|('
+            read_content_alias_0 = re.sub(",", ")|(", read_content_alias_0)
+
+            # 将获取到的内容以换行进行分割得到内容列表
+            list_alias_0 = read_content_alias_0.split('\n')
 
             # 打开#file_pure.txt, 读取内容
             open_file_pure_0 = open(source_file_name_0, 'r', encoding='utf-8')
-            read_content_0 = open_file_pure_0.read()
+            read_content_pure_0 = open_file_pure_0.read()
 
-            # 去掉\n和多余空格, 即合并换行
-            read_content_0 = re.sub(r'[\n\s]+', '', read_content_0)
+            # 替换文本中换行
+            read_content_pure_0 = read_content_pure_0.replace('\n','')
 
             # 新建词典, 以:分割,冒号的人名为key,冒号后的别名列表eval为value.
-            dct0 = {}
+            dct_alias_0 = {}
             for list_alias_0_t0 in list_alias_0:
                 """
-                $1 list_alias_0_t0.find(':')                            查找':'的下标
-                $2 list_alias_0_t0[0:$1]                                从0下标截取到':'处,即人名
-                $3 dct0[$2]                                             更新值为value的人名
-                $4 list_alias_0_t0.find(':')+1:]                        冒号后内容
-                $5 re.sub(r"\[|,?\]", "", $4)                           将'['',]'']'删除,直至$4包含','
-                $6 $5.split(',')                                        使用','分割各别名,即得到别名列表
+                $1 index_of_split                                               查找':'的下标
+                $2 dict_alias_0_key                                             从0下标截取到':'处,即人名
+                $3 dict_alias_0_value                                           冒号后内容,即别名列表
+                $4 dct_alias_0[dict_alias_0_key] = dict_alias_0_value           更新字典
                 """
-                dct0[list_alias_0_t0[0:list_alias_0_t0.find(
-                    ':')]] = re.sub(r"\[|,?\]", "", list_alias_0_t0[list_alias_0_t0.find(':')+1:]).split(',')
+                index_of_split = list_alias_0_t0.find(':')
+                dict_alias_0_key = list_alias_0_t0[0:index_of_split]
+                dict_alias_0_value = list_alias_0_t0[index_of_split+1:]
+                dct_alias_0[dict_alias_0_key] = dict_alias_0_value
 
-            # 使用t2遍历字典的键
-            list_person_names_0 = list(dct0.keys())
-            for list_alias_0_t2 in list_person_names_0:
-                # 使用t3遍历字典的值
-                list_person_alias_0 = list(dct0[list_alias_0_t2])[1:]
-                for list_alias_0_t3 in list_person_alias_0:
-                    # 使用key替换values, 即人名替换别名
-                    read_content_0 = read_content_0.replace(
-                        list_alias_0_t3, list_alias_0_t2)
-                
+            # 使用t2遍历字典的键, 使用正则表达式替换别名
+            for list_alias_0_t2 in list(dct_alias_0.keys()):
+                read_content_pure_0 = re.sub(
+                    dct_alias_0[list_alias_0_t2], list_alias_0_t2, read_content_pure_0)
+
+            # 保存内容至whole文件
             open_file_whole_0 = open(source_file_name_0.replace(
                 ".txt", "_whole.txt"), 'w+', encoding='utf-8')
-            open_file_whole_0.write(read_content_0)
+            open_file_whole_0.write(read_content_pure_0)
     except Exception as identifier:
         print(list_file_name_0_t+" : "+identifier)
     finally:
