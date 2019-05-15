@@ -80,9 +80,10 @@ for list_file_name_0_t in list_file_name_0:
             open_file_whole_0 = open(source_file_name_0.replace(
                 ".txt", "_whole.txt"), 'w+', encoding='utf-8')
             open_file_whole_0.write(read_content_pure_0)
+
+            # 关闭文件
+            open_file_alias_0.close()
+            open_file_pure_0.close()
+            open_file_whole_0.close()
     except Exception as identifier:
         print(list_file_name_0_t+" : "+identifier)
-    finally:
-        open_file_alias_0.close()
-        open_file_pure_0.close()
-        open_file_whole_0.close()
