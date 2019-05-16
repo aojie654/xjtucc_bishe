@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from os import system as s, path as p
 from subprocess import getoutput as spgop
 import re
@@ -23,22 +22,23 @@ for list_file_name_0_t in list_file_name_0:
     # 获取作品名
     file_name_0 = file_dir_0[file_dir_0.rfind('/')+1:]
 
-    # 输出文件名
-    print(list_file_name_0_t, end=", ")
+    # 文件源即为当前遍历元素
+    file_source_name_0 = list_file_name_0_t
+    print(file_source_name_0+", ", end="")
     
     # 跳过已经去除冗余文字的文件
-    if p.exists(list_file_name_0_t.replace("_01_utf8.txt", "_02_pure.txt")):
+    if p.exists(file_source_name_0.replace("_01_utf8.txt", "_02_pure.txt")):
         print("[Skipped.]")
     else:
         print("[Processing...]")
         try:
             # 读取文件内容
             open_file_source_0 = open(
-                list_file_name_0_t, "r", encoding="utf-8")
+                file_source_name_0, "r", encoding="utf-8")
             read_content_utf8_0 = open_file_source_0.read()
 
             # 创建_02_pure的文本文件, 并保存为UTF-8编码
-            open_file_pure_0 = open(list_file_name_0_t.replace("_01_utf8.txt", '') +
+            open_file_pure_0 = open(file_source_name_0.replace("_01_utf8.txt", '') +
                                     "_02_pure.txt", "w+", encoding="utf-8")
 
             # 删除类似于广告之类的文本
