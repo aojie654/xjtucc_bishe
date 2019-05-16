@@ -8,8 +8,8 @@ import jieba.posseg as pseg
 # 输入路径
 dir0 = input("Input DIR plz(with out end of /):")
 
-# 调用find查找$file_03_alias.txt文件
-find_result_0 = str(spgop("find "+dir0+" -name '*_03_alias.txt'"))
+# 调用find查找$file_04_whole.txt文件
+find_result_0 = str(spgop("find "+dir0+" -name '*_04_whole.txt'"))
 
 # 定义列表list_file_name_0以存放分割后的文件列表
 list_file_name_0 = find_result_0.split('\n')
@@ -28,10 +28,10 @@ for list_file_name_0_t in list_file_name_0:
     print(file_source_name_0+", ", end="")
 
     try:
-        # 判断$file_05_departs.txt和$file_05_marks.txt文件如果存在, 即已经处理过则跳过
+        # 判断$file_05_departw.txt和$file_05_markw.txt文件如果存在, 即已经处理过则跳过
         if p.exists(file_source_name_0.replace(
-                "_03_alias.txt", "_05_departs.txt")) and p.exists(file_source_name_0.replace(
-                "_03_alias.txt", "_05_marks.txt")):
+                "_04_whole.txt", "_05_departw.txt")) and p.exists(file_source_name_0.replace(
+                "_04_whole.txt", "_05_markw.txt")):
             print("[Skipped.]")
         else:
             print("[Processing...]")
@@ -45,7 +45,7 @@ for list_file_name_0_t in list_file_name_0:
             else:
                 pass
 
-            # 打开$file_03_alias.txt, 读取文件内容并关闭文件
+            # 打开$file_04_whole.txt, 读取文件内容并关闭文件
             file_open_alias_0 = open(file_source_name_0, 'r', encoding='utf-8')
             read_content_alias_0 = file_open_alias_0.read()
             file_open_alias_0.close()
@@ -56,18 +56,18 @@ for list_file_name_0_t in list_file_name_0:
             # 将结果转换为文本
             result_depart_0 = " ".join(result_jieba_0)
 
-            # 打开$file_05_departs.txt进行写入并关闭文件
+            # 打开$file_05_departw.txt进行写入并关闭文件
             file_open_depart_0 = open(file_source_name_0.replace(
-                "_03_alias.txt", "_05_departs.txt"), "w+", encoding="utf-8")
+                "_04_whole.txt", "_05_departw.txt"), "w+", encoding="utf-8")
             file_open_depart_0.write(result_depart_0)
             file_open_depart_0.close()
 
             # 使用jieba进行磁性标注
             result_jieba_0 = pseg.cut(read_content_alias_0)
 
-            # 打开$file_05_marks.txt写入标注结果
+            # 打开$file_05_markw.txt写入标注结果
             file_open_mark_0 = open(file_source_name_0.replace(
-                "_03_alias.txt", "_05_marks.txt"), "w+", encoding="utf-8")
+                "_04_whole.txt", "_05_markw.txt"), "w+", encoding="utf-8")
             for word, flag in result_jieba_0:
                 file_open_mark_0.write(str(word)+" "+str(flag)+"\n")
             file_open_mark_0.close()
