@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-
 from os import system as s, path as p
 from subprocess import getoutput as spgop
 import re
+
 # 输入路径
 dir0 = input("Input DIR plz(with out end of /):")
 
-# 由于不是每个作品都有别名, 因此使用find查找alias.txt文件
-find_result_0 = str(spgop("find "+dir0+" -name 'alias.txt'"))
+# 由于不是每个作品都有别名, 因此使用find查找*_pure.txt文件
+find_result_0 = str(spgop("find "+dir0+" -name '*_pure.txt'"))
 
 # 定义列表l0以存放分割后的文件列表
 list_file_name_0 = find_result_0.split('\n')
@@ -24,11 +24,16 @@ for list_file_name_0_t in list_file_name_0:
 
     try:
         # 拼接以得到文件名
-        source_file_name_0 = file_dir_0+"/"+file_name_0+"_utf8_pure.txt"
-        print(source_file_name_0, end=", ")
+        source_file_name_0 = file_dir_0+"/"+file_name_0+"_utf8_pure_single.txt"
 
-        # 判断$file_whole.txt文件如果存在, 即已经处理过则跳过
-        if p.exists(source_file_name_0.replace(".txt", "_whole.txt")):
+        
+        if p.exists(source_file_name_0):
+            pass
+        else:
+            source_file_name_0 = source_file_name_0.replace("_utf8_pure_single.txt", "_utf8_pure.txt")
+        print(source_file_name_0, end=", ")
+        # 判断$file_single.txt文件如果存在, 即已经处理过则跳过
+        if p.exists(source_file_name_0.replace(".txt", "_single.txt")):
             print("[Skiped.]")
         else:
             print("[Processing...]")
@@ -54,9 +59,6 @@ for list_file_name_0_t in list_file_name_0:
             open_file_pure_0 = open(source_file_name_0, 'r', encoding='utf-8')
             read_content_pure_0 = open_file_pure_0.read()
 
-            # 替换文本中换行
-            read_content_pure_0 = read_content_pure_0.replace('\n','')
-
             # 新建词典, 以:分割,冒号的人名为key,冒号后的别名列表eval为value.
             dct_alias_0 = {}
             for list_alias_0_t0 in list_alias_0:
@@ -76,14 +78,14 @@ for list_file_name_0_t in list_file_name_0:
                 read_content_pure_0 = re.sub(
                     dct_alias_0[list_alias_0_t2], list_alias_0_t2, read_content_pure_0)
 
-            # 保存内容至whole文件
-            open_file_whole_0 = open(source_file_name_0.replace(
-                ".txt", "_whole.txt"), 'w+', encoding='utf-8')
-            open_file_whole_0.write(read_content_pure_0)
+            # 保存内容至single文件
+            open_file_single_0 = open(source_file_name_0.replace(
+                ".txt", "_single.txt"), 'w+', encoding='utf-8')
+            open_file_single_0.write(read_content_pure_0)
 
             # 关闭文件
             open_file_alias_0.close()
             open_file_pure_0.close()
-            open_file_whole_0.close()
+            open_file_single_0.close()
     except Exception as identifier:
         print(list_file_name_0_t+" : "+identifier)
