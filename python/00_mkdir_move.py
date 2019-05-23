@@ -17,9 +17,12 @@ list_file_create_0 = []
 for list_file_name_0_t in list_file_name_0:
     list_file_name_0_t = list_file_name_0_t.replace(dir0+"/", '')
     list_file_name_0_t = list_file_name_0_t.replace(".txt", '')
+    print(list_file_name_0_t+", ", end="")
+
     if '/' in list_file_name_0_t:
-        pass
+        print("[Skipped.]")
     else:
+        print("[Processing...]")
         list_file_create_0.append(list_file_name_0_t)
 
 # 调用mkdir创建文件夹并将文件移动至各自的文件夹内
