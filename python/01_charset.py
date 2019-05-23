@@ -42,7 +42,7 @@ for list_file_name_0_t in list_file_name_0:
 
             # 创建一个文件名相同,后缀增加utf8的文本文件,将内容写入文件并保存
             open_file_utf8_0 = open(file_source_name_0.replace(".txt", '') +
-                                       "_utf8.txt", "w+", encoding="utf-8")
+                                       "_01_utf8.txt", "w+", encoding="utf-8")
             open_file_utf8_0.write(read_content_0)
             open_file_utf8_0.close()
 
