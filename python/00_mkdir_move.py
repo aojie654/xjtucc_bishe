@@ -7,7 +7,7 @@ from subprocess import getoutput as spgop
 dir0 = input("Input DIR plz(with out end of /):")
 
 # 查找.txt文件
-find_result_0 = str(spgop("find "+dir0+" -name '*.txt'"))
+find_result_0 = spgop("find "+dir0+" -name '*.txt'")
 
 # 将文件列表以回车切存至列表
 list_file_name_0 = find_result_0.split('\n')

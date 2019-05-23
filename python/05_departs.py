@@ -9,7 +9,7 @@ import jieba.posseg as pseg
 dir0 = input("Input DIR plz(with out end of /):")
 
 # 调用find查找$file_03_alias.txt文件
-find_result_0 = str(spgop("find "+dir0+" -name '*_03_alias.txt'"))
+find_result_0 = spgop("find "+dir0+" -name '*_03_alias.txt'")
 
 # 定义列表list_file_name_0以存放分割后的文件列表
 list_file_name_0 = find_result_0.split('\n')

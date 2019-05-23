@@ -11,7 +11,7 @@ dir0 = input("Input DIR plz(with out end of /):")
 dir1 = dir0+'/'
 
 # 调用find查找.txt文件
-find_result_0 = str(spgop("find "+dir0+" -name '*.txt'"))
+find_result_0 = spgop("find "+dir0+" -name '*.txt'")
 
 # 定义列表l0以存放分割后的文件列表
 list_file_name_0 = find_result_0.split('\n')
