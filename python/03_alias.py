@@ -72,12 +72,12 @@ for list_file_name_0_t in list_file_name_0:
                     """
                     $1 index_of_split                                               查找':'的下标
                     $2 dict_alias_0_key                                             从0下标截取到':'处,即人名
-                    $3 dict_alias_0_value                                           冒号后内容,即别名列表
+                    $3 dict_alias_0_value                                           第一个|后内容,即别名表
                     $4 dct_alias_0[dict_alias_0_key] = dict_alias_0_value           更新字典
                     """
                     index_of_split = list_alias_0_t0.find(':')
                     dict_alias_0_key = list_alias_0_t0[0:index_of_split]
-                    dict_alias_0_value = list_alias_0_t0[index_of_split+1:]
+                    dict_alias_0_value = list_alias_0_t0[list_alias_0_t0.find('|')+1:]
                     dct_alias_0[dict_alias_0_key] = dict_alias_0_value
 
                 # 使用t2遍历字典的键, 使用正则表达式替换别名
