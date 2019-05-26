@@ -62,7 +62,7 @@ for list_file_name_0_t in list_file_name_0:
             file_open_depart_0.write(result_depart_0)
             file_open_depart_0.close()
 
-            # 使用jieba进行磁性标注
+            # 使用jieba进行词性标注
             result_jieba_0 = pseg.cut(read_content_alias_0)
 
             # 打开$file_05_markw.txt写入标注结果
