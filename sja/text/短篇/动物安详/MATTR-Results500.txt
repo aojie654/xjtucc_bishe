@@ -1,0 +1,4 @@
+﻿MATTR 1.0.6877.18766 2018/10/31
+
+  Words	Window	MATTR 	Filename
+    783	   500	0.591  	动物安详_05_departs.txt                     
