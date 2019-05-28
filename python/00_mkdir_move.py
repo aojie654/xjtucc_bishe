@@ -21,9 +21,9 @@ for list_file_name_0_t in list_file_name_0:
 
     if '/' in list_file_name_0_t:
         print("[Skipped.]")
-    else:
-        print("[Processing...]")
-        list_file_create_0.append(list_file_name_0_t)
+        continue
+    print("[Processing...]")
+    list_file_create_0.append(list_file_name_0_t)
 
 # 调用mkdir创建文件夹并将文件移动至各自的文件夹内
 for list_file_create_0_t in list_file_create_0:

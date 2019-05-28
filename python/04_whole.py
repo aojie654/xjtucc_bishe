@@ -31,22 +31,22 @@ for list_file_name_0_t in list_file_name_0:
         if p.exists(file_source_name_0.replace(
                 "_03_alias.txt", "_04_whole.txt")):
             print("[Skipped.]")
-        else:
-            print("[Processing...]")
+            continue
+        print("[Processing...]")
 
-            # 打开#file_03_alias.txt, 读取内容并关闭文件
-            open_file_alias_0 = open(file_source_name_0, 'r', encoding='utf-8')
-            read_content_alias_0 = open_file_alias_0.read()
-            open_file_alias_0.close()
+        # 打开#file_03_alias.txt, 读取内容并关闭文件
+        open_file_alias_0 = open(file_source_name_0, 'r', encoding='utf-8')
+        read_content_alias_0 = open_file_alias_0.read()
+        open_file_alias_0.close()
 
-            # 替换所有空格
-            read_content_alias_0 = re.sub("\n", "", read_content_alias_0)
-            
-            # 保存内容至$file_04_whole.txt文件
-            open_file_whole_0 = open(file_source_name_0.replace(
-                "_03_alias.txt", "_04_whole.txt"), 'w+', encoding='utf-8')
-            open_file_whole_0.write(read_content_alias_0)
-            open_file_whole_0.close()
+        # 替换所有空格
+        read_content_alias_0 = re.sub("\n", "", read_content_alias_0)
+        
+        # 保存内容至$file_04_whole.txt文件
+        open_file_whole_0 = open(file_source_name_0.replace(
+            "_03_alias.txt", "_04_whole.txt"), 'w+', encoding='utf-8')
+        open_file_whole_0.write(read_content_alias_0)
+        open_file_whole_0.close()
 
     except Exception as identifier:
         print(file_source_name_0+" : "+identifier)
