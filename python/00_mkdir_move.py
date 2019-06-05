@@ -2,6 +2,7 @@
 
 from os import system as s
 from subprocess import getoutput as spgop
+import glob as gb
 
 # 输入需要根据txt文件名创建文件夹的路径
 dir0 = input("Input DIR plz(with out end of /):")

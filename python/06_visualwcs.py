@@ -10,7 +10,7 @@ from wordcloud import wordcloud as wc
 
 # 输入路径
 # dir0 = input("Input DIR plz(with out end of /):")
-dir0 = "/Users/aojie654/tmp/sja/text/中篇"
+dir0 = "/Users/aojie654/tmp/text"
 
 # 调用find查找$file_05_departs.txt文件
 find_command_0 = "find "+dir0+" -name '*_05_departs.txt'"
@@ -53,7 +53,7 @@ for list_file_name_0_t in list_file_name_0:
         plt.rcParams['font.sans-serif'] = ['PingFang HK']
 
         # 设置标题
-        plt.title(work_name_0+"词云")
+        plt.title("《"+work_name_0+"》"+"词云")
 
         # 词云展示并存储
         plt.imshow(word_cloud_0)

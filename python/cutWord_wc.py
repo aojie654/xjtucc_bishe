@@ -9,12 +9,7 @@ from matplotlib.font_manager import findfont, FontProperties
 
 # 输入路径
 # dir0 = input("Input DIR plz(with out end of /):")
-
-dir0 = "/Users/aojie654/tmp/text/五魁"
-# dir0 = "/Users/aojie654/tmp/text/人极"
-# dir0 = "/Users/aojie654/tmp/text/天狗"
-# dir0 = "/Users/aojie654/tmp/text/白朗"
-# dir0 = "/Users/aojie654/tmp/text/美穴地"
+dir0 = "/Users/aojie654/tmp/sja/text/中篇/白朗"
 
 # 调用find查找$frequency.csv文件
 find_result_0 = spgop("find "+dir0+" -name 'frequency.csv'")
