@@ -1,6 +1,6 @@
 # encoding=utf-8
 """
-这个模块用于根据文本名称创建相应的文件夹
+根据文本名称创建相应的文件夹
 """
 
 import os
@@ -13,13 +13,14 @@ def folder_content(folder_path):
     """
 
     # 列出当前目录内容
-    list_folder = os.listdir()
+    filepath_content = os.listdir()
 
     # 排除 macOS 中的 .DS_Store 文件
-    list_folder.remove(".DS_Store")
+    if ".DS_Store" in filepath_content:
+        filepath_content.remove(".DS_Store")
 
     # 返回目录文件
-    return list_folder
+    return filepath_content
 
 
 def create_folders(file_name):
@@ -44,19 +45,22 @@ def create_folders(file_name):
         # 尝试移动文件
         shutil.move(file_name, texted_folder_name)
         message_moved = "文件: " + file_name + " 移动完毕"
-        
+
         # 拼接 文件夹创建信息 和 文件移动信息
         message_return = message_folder + "\n" + message_moved
     except Exception as identifier:
         message_return = "捕获到了一个其他异常, 相关信息为:" + str(identifier)
-    
+
     return message_return
 
 
-if __name__ == "__main__":
+def mkdir_move():
+    """
+    创建文件夹并移动文件的全部流程
+    """
     # 输入需要根据txt文件名创建文件夹的路径
-    # path_text = input("Input DIR plz(with out end of /):")
-    path_text = "/Volumes/data/tmp/python_debug/p3/xjtucc_bishe/00_origin_work/中篇"
+    path_text = input("请输入存放 txt 文件的目录(Windows需要用\"\\\\\"将\"\\\"自身转义): ")
+    # path_text = "/Volumes/data/tmp/python_debug/p3/xjtucc_bishe/00_origin_work/中篇00"
 
     # 改变工作路径
     os.chdir(path_text)
@@ -73,10 +77,17 @@ if __name__ == "__main__":
         else:
             # 如果没有文本文件, 则无需执行任何动作
             message_call = os.path.abspath(file_name) + " 不是 txt 文件, 跳过创建"
-        
+
         # 输出结果信息
         print(message_call)
-    
+
     # 输出执行结束提示
     message_final = "脚本执行完毕."
-    print(message_final)
+
+    # 返回最终执行结果
+    return message_final
+
+
+if __name__ == "__main__":
+    message_process = mkdir_move()
+    print(message_process)
