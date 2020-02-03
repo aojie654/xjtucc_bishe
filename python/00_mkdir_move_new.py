@@ -4,26 +4,15 @@
 """
 
 import os
-from platform import system as os_system
+import shutil
 
 
-def folder_tree(folder_path):
+def folder_content(folder_path):
     """
     获取文件夹目录树
     """
 
-    # os_walker = os.walk(path_text)
-
-    # # 将迭代器中的每个对象保存至列表
-    # list_folder = []
-    # for generator_tmp in os_walker:
-    #     # 在macOS中排除 .DS_Store 文件
-    #     generator_tmp[2].remove(".DS_Store")
-
-    #     # 将目录对象添加至列表中
-    #     list_folder.append(generator_tmp)
-
-    # 
+    # 列出当前目录内容
     list_folder = os.listdir()
 
     # 排除 macOS 中的 .DS_Store 文件
@@ -40,16 +29,28 @@ def create_folders(file_name):
 
     # 将文件名中的 .txt 去掉, 得到相应的文件夹名
     texted_folder_name = file_name.replace(".txt", "")
+    message_return = ""
 
     try:
-        os.mkdir(texted_folder_name)
-    except FileExistsError as identifier:
-        print("文件夹"+ texted_folder_name +"已经存在")
+        # 判断文件夹是否已经创建:
+        if not os.path.exists(texted_folder_name):
+            # 文件夹不存在时, 创建相对应文件夹
+            os.mkdir(texted_folder_name)
+            message_folder = "文件夹: " + texted_folder_name + " 创建成功"
+        else:
+            # 否则跳过创建
+            message_folder = "文件夹: " + texted_folder_name + " 已存在, 跳过创建"
+
+        # 尝试移动文件
+        shutil.move(file_name, texted_folder_name)
+        message_moved = "文件: " + file_name + " 移动完毕"
+        
+        # 拼接 文件夹创建信息 和 文件移动信息
+        message_return = message_folder + "\n" + message_moved
     except Exception as identifier:
-        print("捕获到了一个其他异常, 相关信息为:" + str(identifier))
-    else:
-        print(texted_folder_name + " 创建成功")
+        message_return = "捕获到了一个其他异常, 相关信息为:" + str(identifier)
     
+    return message_return
 
 
 if __name__ == "__main__":
@@ -60,16 +61,22 @@ if __name__ == "__main__":
     # 改变工作路径
     os.chdir(path_text)
 
-    # 调用 folder_tree() 得到当前工作目录的目录树
-    list_folder = folder_tree('.')
+    # 调用 folder_content() 得到当前工作目录的目录树
+    list_folder = folder_content('.')
 
-    # 目录树中每个文件文件分别进行创建目录
-    # for file_name in list_folder[-1][-1]:
-    #     # 对每个文件名进行校对, 如果包含 .txt 则调用 create_folders() 创建名称对应的文件夹
-    #     if ".txt" in file_name:
-    #         create_folders(file_name)
-
+    # 针对每个文件分循环调用 create_folders() 创建文件夹
     for file_name in list_folder:
-        # 对每个文件名进行校对, 如果包含 .txt 则调用 create_folders() 创建名称对应的文件夹
-        if ".txt" in file_name:
-            create_folders(file_name)
+        # 对每个文件名进行校对, 如果属于 txt 文件则调用 create_folders() 创建名称对应的文件夹
+        if os.path.splitext(file_name)[1] == ".txt":
+            # 获取返回信息并输出
+            message_call = create_folders(file_name)
+        else:
+            # 如果没有文本文件, 则无需执行任何动作
+            message_call = os.path.abspath(file_name) + " 不是 txt 文件, 跳过创建"
+        
+        # 输出结果信息
+        print(message_call)
+    
+    # 输出执行结束提示
+    message_final = "脚本执行完毕."
+    print(message_final)
