@@ -9,26 +9,9 @@ import os
 import chardet
 
 
-def encode_detect(filename):
+def content_purly(filename, filname_save, encodes):
     """
-    检测文件编码格式
-    """
-
-    # 打开文件,读取文件内容并关闭文件
-    object_open_source = open(filename, "rb")
-    content_open_source = object_open_source.read()
-
-    # 根据文件内容, 判断文件编码
-    chardet_source = chardet.detect(content_open_source)["encoding"]
-    object_open_source.close()
-
-    # 返回文件编码
-    return chardet_source
-
-
-def encode_convert(filename, filname_save, encodes):
-    """
-    文件编码格式转换为 utf-8
+    去冗余内容
     """
     try:
         # 定义文本保存的编码格式
@@ -167,14 +150,14 @@ def process_start(folder_path):
 
 if __name__ == "__main__":
 
-    input_hint = """请输入需要转码的文本的上级路径. 
+    input_hint = """请输入需要去冗余内容的文本的上级路径. 
 例如, 需要处理的文本为 \"/home/txt/中篇/天狗/天狗.txt\"
 则输入 /home/txt/中篇
     """
 
     print(input_hint)
-    folder_path = input("请输入: ")
-    # folder_path = "/Volumes/data/tmp/python_debug/p3/xjtucc_bishe/00_origin_work/中篇01"
+    # folder_path = input("请输入: ")
+    folder_path = "/Volumes/data/tmp/python_debug/p3/xjtucc_bishe/00_origin_work/中篇01"
 
     # 调用 process_start() 进行开始处理
     result_process_final = process_start(folder_path)
